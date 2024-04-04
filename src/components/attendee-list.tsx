@@ -11,8 +11,15 @@ import { Table } from './Table/table'
 import { TableHeader } from './Table/table-header'
 import { TableCell } from './Table/table-cell'
 import { TableRow } from './Table/table-row'
+import { ChangeEvent, useState } from 'react'
 
 export function Attendee() {
+  const [search, setSearch] = useState('')
+
+  function onSearchInputChanged(event: ChangeEvent<HTMLInputElement>) {
+    setSearch(event.target.value)
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-3 items-center">
@@ -20,10 +27,13 @@ export function Attendee() {
         <div className="px-3 w-72 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3">
           <Search className="size-4 text-emerald-300" />
           <input
+            onChange={onSearchInputChanged}
             className="bg-transparent flex-1 outline-none border-0 p-0 text-sm"
             placeholder="Search for attendees..."
           />
         </div>
+
+        {search}
       </div>
 
       <Table>
