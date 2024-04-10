@@ -17,10 +17,18 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 
 dayjs.extend(relativeTime)
 
+interface Attendee {
+  id: string
+  name: string
+  email: string
+  createAt: string
+  checkedInAt: string | null
+}
+
 export function Attendee() {
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [attendees, setAttendees] = useState([])
+  const [attendees, setAttendees] = useState<Attendee[]>([])
 
   const totalPages = Math.ceil(attendees.length / 10)
 
@@ -86,7 +94,7 @@ export function Attendee() {
           </tr>
         </thead>
         <tbody>
-          {attendees.slice((page - 1) * 10, page * 10).map((attendee) => {
+          {attendees.map((attendee) => {
             return (
               <TableRow key={attendee.id} className="border-b border-white/10">
                 <TableCell>
@@ -105,7 +113,13 @@ export function Attendee() {
                   </div>
                 </TableCell>
                 <TableCell>{dayjs().to(attendee.createAt)}</TableCell>
-                <TableCell>{dayjs().to(attendee.checkedInAt)}</TableCell>
+                <TableCell>
+                  {attendee.checkedInAt === null ? (
+                    <span className="text-zinc-500">Não fez check-in</span>
+                  ) : (
+                    dayjs().to(attendee.checkedInAt)
+                  )}
+                </TableCell>
                 <TableCell>
                   <IconButton transparent>
                     <MoreHorizontal className="size-4" />
