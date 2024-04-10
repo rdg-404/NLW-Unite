@@ -115,7 +115,7 @@ export function Attendee() {
                 <TableCell>{dayjs().to(attendee.createAt)}</TableCell>
                 <TableCell>
                   {attendee.checkedInAt === null ? (
-                    <span className="text-zinc-500">Não fez check-in</span>
+                    <span className="text-zinc-500">Did not check-in</span>
                   ) : (
                     dayjs().to(attendee.checkedInAt)
                   )}
