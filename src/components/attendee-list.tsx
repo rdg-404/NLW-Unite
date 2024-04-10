@@ -11,9 +11,8 @@ import { Table } from './Table/table'
 import { TableHeader } from './Table/table-header'
 import { TableCell } from './Table/table-cell'
 import { TableRow } from './Table/table-row'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import dayjs from 'dayjs'
-import { attendees } from '../data/attendee'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 dayjs.extend(relativeTime)
@@ -21,8 +20,19 @@ dayjs.extend(relativeTime)
 export function Attendee() {
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [attendees, setAttendees] = useState([])
 
   const totalPages = Math.ceil(attendees.length / 10)
+
+  useEffect(() => {
+    fetch(
+      'http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees',
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setAttendees(data.attendees)
+      })
+  }, [page])
 
   function onSearchInputChanged(event: ChangeEvent<HTMLInputElement>) {
     setSearch(event.target.value)
