@@ -26,7 +26,6 @@ interface Attendee {
 }
 
 export function Attendee() {
-  const [search, setSearch] = useState('')
   const [page, setPage] = useState(() => {
     const url = new URL(window.location.toString())
 
@@ -35,6 +34,16 @@ export function Attendee() {
     }
 
     return 1
+  })
+
+  const [search, setSearch] = useState(() => {
+    const url = new URL(window.location.toString())
+
+    if (url.searchParams.has('search')) {
+      return url.searchParams.get('search') ?? ''
+    }
+
+    return ''
   })
 
   const [total, setTotal] = useState(0)
@@ -69,8 +78,16 @@ export function Attendee() {
     setPage(page)
   }
 
+  function setCurrentSearch(search: string) {
+    const url = new URL(window.location.toString())
+    url.searchParams.set('search', search)
+    window.history.pushState({}, '', url)
+
+    setSearch(search)
+  }
+
   function onSearchInputChanged(event: ChangeEvent<HTMLInputElement>) {
-    setSearch(event.target.value)
+    setCurrentSearch(event.target.value)
     setCurrentPage(1)
   }
 
@@ -97,6 +114,7 @@ export function Attendee() {
           <Search className="size-4 text-emerald-300" />
           <input
             onChange={onSearchInputChanged}
+            value={search}
             className="bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
             placeholder="Search for attendees..."
           />
