@@ -70,20 +70,20 @@ export function Attendee() {
       })
   }, [page, search])
 
-  function setCurrentPage(page: number) {
-    const url = new URL(window.location.toString())
-    url.searchParams.set('page', String(page))
-    window.history.pushState({}, '', url)
-
-    setPage(page)
-  }
-
   function setCurrentSearch(search: string) {
     const url = new URL(window.location.toString())
     url.searchParams.set('search', search)
-    window.history.pushState({}, '', url)
 
+    window.history.pushState({}, '', url)
     setSearch(search)
+  }
+
+  function setCurrentPage(page: number) {
+    const url = new URL(window.location.toString())
+    url.searchParams.set('page', String(page))
+
+    window.history.pushState({}, '', url)
+    setPage(page)
   }
 
   function onSearchInputChanged(event: ChangeEvent<HTMLInputElement>) {
